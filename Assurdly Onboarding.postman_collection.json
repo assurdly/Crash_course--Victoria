@@ -1,0 +1,707 @@
+{
+	"info": {
+		"_postman_id": "97e9b0be-61f4-4d38-984c-ccc0593a6617",
+		"name": "Assurdly Onboarding",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Initialize",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "0679dfe0-45d5-41db-bb72-8504483e6388",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "89a5a05c-110c-430c-a4dc-00184e6c059c",
+						"exec": [
+							"pm.test(\"Status code should be 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.environment.set(\"otp_code\", pm.response.json().data.otp_code);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Basic NDU1NDIxODU3MjpQQ1ZBMGkwaFNBc24="
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"phone_number\": \"08130963670\"\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}auth/onboard",
+					"host": [
+						"{{baseUrl}}auth"
+					],
+					"path": [
+						"onboard"
+					]
+				},
+				"description": "This is the first onboarding stage.\nThis endpoint sends `otp` to the phone number of the onboarding user.\n\n## Payload\n\n`phone_number`: `required` valid phone number of the user\n\n## Constraints\n`phone_number`: phone number must be a valid Nigerian number\n\n"
+			},
+			"response": [
+				{
+					"name": "Init - Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"phone_number\": \"08163047983\",\n\t\"org_id\": 1\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}auth/onboard",
+							"host": [
+								"{{baseUrl}}auth"
+							],
+							"path": [
+								"onboard"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "66"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"42-AzrUE0uY13X3W2ssl/0+d4Z0ZxQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 02 Apr 2020 09:55:26 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"message\": \"OTP successfully sent\",\n    \"data\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "Confirm OTP",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "072e11ab-d83d-4985-be0b-550d608f7283",
+						"exec": [
+							"pm.test(\"Status code should be 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic NDU1NDIxODU3MjpQQ1ZBMGkwaFNBc24=",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"phone_number\": \"08130963670\",\n\t\"otp_code\":  \"{{otp_code}}\"\n\t}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}auth/onboard/otp",
+					"host": [
+						"{{baseUrl}}auth"
+					],
+					"path": [
+						"onboard",
+						"otp"
+					]
+				},
+				"description": "This is the second onboarding stage.\nThis endpoint confirms the `otp` sent to the onboarding user from the first stage\n\n## Payload\n\n`phone_number`: `required` valid phone number of the user\n`otp`: `required` otp sent to the user\n\n## Constraints\n`phone_number`: phone number must be a valid Nigerian number\n\n"
+			},
+			"response": [
+				{
+					"name": "Confirm Otp - Failed",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"phone_number\": \"08163047983\",\n\t\"otp\": \"866022\",\n\t\"org_id\": 1\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}auth/onboard/otp",
+							"host": [
+								"{{baseUrl}}auth"
+							],
+							"path": [
+								"onboard",
+								"otp"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "76"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"4c-RkdRpgNTDNcZz7ARfr9yy6K/XBQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 02 Apr 2020 09:58:34 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"error\",\n    \"message\": \"The OTP you entered is not valid.\",\n    \"data\": null\n}"
+				},
+				{
+					"name": "Confirm Otp - Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic OTg3NjU0NTY3ODkwMDpxbDJ0ZHNndzdsYng=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"phone_number\": \"08163047983\",\n\t\"otp\": \"860114\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}auth/onboard/otp",
+							"host": [
+								"{{baseUrl}}auth"
+							],
+							"path": [
+								"onboard",
+								"otp"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "88"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"58-MsTkqiiTh85kLifPOULprpM7UIw\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 05 Apr 2020 18:33:27 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"message\": \"OTP successfully confirmed\",\n    \"data\": {\n        \"comfirmation_id\": 3\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Create Password",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "525af3e1-2a08-4738-ac9a-f8a604445cb2",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "a9f4d275-ed63-4e7b-ada6-eb760d39ef48",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic NDU1NDIxODU3MjpQQ1ZBMGkwaFNBc24=",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"phone_number\": \"08061111111\",\n\t\"password\": \"Password1@\",\n\t\"confirmation_id\": \"798\",\n\t\"device_id\": \"12345678\"\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}auth/onboard/password",
+					"host": [
+						"{{baseUrl}}auth"
+					],
+					"path": [
+						"onboard",
+						"password"
+					]
+				},
+				"description": "This is the third onboarding stage.\n This endpoint creates a password for the onboarding user and creates account for him/her.\n This endpoint returns the access `token` that would be used to complete the onboarding process\n\n\n## Payload\n\n`phone_number`: `required` valid phone number of the user\n`password`: `required` valid password\n`confirmation_id`: `required` confirmation_id gotten from otp verification\n\n## Constraint\n\n`phone_number`: phone number must be a valid Nigerian number\n`password`: password must have one uppercase, one loweercase, atleast on symbol and must not be less than 8 characters"
+			},
+			"response": [
+				{
+					"name": "Create password - Invalid confirmation id",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"phone_number\": \"08163047983\",\n\t\"password\": \"Password@\",\n\t\"confirmation_id\": \"3\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{bainesUrl}}auth/createpassword",
+							"host": [
+								"{{bainesUrl}}auth"
+							],
+							"path": [
+								"createpassword"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "88"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"58-lX+H77kLj6AmpxH4yYmbi0vB7v4\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 20 Nov 2019 21:18:31 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"error\",\n    \"message\": \"Otp does not exist or  has not been confirmed\",\n    \"data\": null\n}"
+				},
+				{
+					"name": "Create password - Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic OTg3NjU0NTY3ODkwMDpxbDJ0ZHNndzdsYng=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"phone_number\": \"08163047983\",\n\t\"password\": \"Password123@\",\n\t\"confirmation_id\": \"3\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}auth/onboard/password",
+							"host": [
+								"{{baseUrl}}auth"
+							],
+							"path": [
+								"onboard",
+								"password"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "275"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"113-FnZz0uGbsfkaF95BySPed9ElwVk\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 05 Apr 2020 18:34:31 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"message\": \"Succesfully created password\",\n    \"data\": {\n        \"id\": 2,\n        \"stage_id\": 1,\n        \"activated\": 0,\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaXNfYWRtaW4iOmZhbHNlLCJpYXQiOjE1ODYxMTE2NzEsImV4cCI6MTU4NjExNTI3MX0.txc9KMRMPWBqFDoP62DaFBlDqrzaMIrO-9HXKljUtJY\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Confirm BVN",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUxLCJpc19hZG1pbiI6ZmFsc2UsImVtYWlsIjpudWxsLCJhY3RpdmF0ZWQiOjAsImlhdCI6MTU5MzgxMDQ4NiwiZXhwIjoxNTkzODE0MDg2fQ.Wzc9O7_sQXGQjmgqY2i1syT7D8E7XN2spYxm3_HJDuc"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"bvn\": \"2217500000\",\n\t\"bvn_phone_number\": \"+2348033743546\",\n\t\"dob\":\"1940/12/01\"\n\t\n}\t",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}auth/onboard/bvn",
+					"host": [
+						"{{baseUrl}}auth"
+					],
+					"path": [
+						"onboard",
+						"bvn"
+					]
+				},
+				"description": "This is the fourth onboarding stage.\nThis endpoint confirms the onboarding user bvn.\n\n## Payload\n\n`bvn`: `required` valid bvn of the user\n`bvn_phone_number`: `required` phone number attached to bvn\n`dob`: `required`date of birth of the user\n\n## Constraint\n\n`bvn_phone_number`: bvn_phone_number must be a valid Nigerian number\n`dob`: formate is must be `YYYY-MM-DD`\n"
+			},
+			"response": [
+				{
+					"name": "Confirm Bvn - Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"bvn\": \"22365301091\",\n\t\"user_id\": \"2\",\n\t\"bvn_phone_number\": \"+2348163047983\",\n\t\"dob\":\"1993/10/12\"\n\t\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{bainesUrl}}auth/confirmbvn",
+							"host": [
+								"{{bainesUrl}}auth"
+							],
+							"path": [
+								"confirmbvn"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "150"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"96-XMSSR+qWgK7LfTywbVrNFSCLBrw\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 20 Nov 2019 12:24:02 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"message\": \"successfully verified bvn\",\n    \"data\": {\n        \"stage_id\": 2,\n        \"activated\": 0\n    }\n}"
+				},
+				{
+					"name": "Confirm Bvn - Failed",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNTc0Mjg4MjUzLCJleHAiOjE1NzQzNzQ2NTN9.9UCeZUeiMbjzvCJR4p70eoINhcdGHzE0EXjMbnbVtD0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"bvn\": \"22365301091\",\n\t\"bvn_phone_number\": \"+2348163047983\",\n\t\"dob\":\"1993/10/12\"\n\t\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{bainesUrl}}auth/confirmbvn",
+							"host": [
+								"{{bainesUrl}}auth"
+							],
+							"path": [
+								"confirmbvn"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "73"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"49-FsJ46MGfV9or2yN+KphmjPvzDu8\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 20 Nov 2019 22:22:56 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"error\",\n    \"message\": \"user onboard stage is at xxx \",\n    \"data\": {\n        \"stage_id\": 2\n    }\n}"
+				}
+			]
+		}
+	],
+	"protocolProfileBehavior": {}
+}
